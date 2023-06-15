@@ -25,7 +25,11 @@ func (n *Node) Hex() string {
 	return hex.EncodeToString(n.Hash)
 }
 
-// Creates a Merkle tree from input hashes
+/*
+- Description: Creates a Merkle tree from a list of input hashes.
+- Input: hashes - a 2D byte slice where each inner slice represents a hash value.
+- Output: Returns a pointer to the resulting Tree structure.
+*/
 func NewTreeFromHashes(hashes [][]byte) *Tree {
 
 	// Gets the length of the hashes
@@ -60,7 +64,15 @@ func NewTreeFromHashes(hashes [][]byte) *Tree {
 	return t
 }
 
-// Verifies the integrity of a given input value
+/*
+  - Description: Verifies the integrity of a given input value using the Merkle proof.
+  - Inputs:
+    rootHash - the hash value of the Merkle root.
+    value - the input value to be verified.
+    proofs - a 2D byte slice containing the proof path (list of hashes) for the input value.
+    idxs - a list of indices (0 for left child, 1 for right child) corresponding to each hash in the proof path.
+  - Output: Returns a boolean indicating whether the input value is valid or not.
+*/
 func VerifyMerkleProof(rootHash, value []byte, proofs [][]byte, idxs []int) bool {
 	prevHash := value
 	// Loops through the proofs
@@ -75,7 +87,11 @@ func VerifyMerkleProof(rootHash, value []byte, proofs [][]byte, idxs []int) bool
 	return bytes.Equal(rootHash, prevHash)
 }
 
-// Returns the Merkle path proof to verify the integrity of the given input hash
+/*
+- Description: Returns the Merkle path proof to verify the integrity of a given input hash.
+- Input: hash - the input hash value to generate the proof for.
+- Output: Returns a 2D byte slice containing the proof path (list of hashes), a list of indices (0 for left child, 1 for right child), and an error if the input hash is not found.
+*/
 func (t *Tree) GenerateMerkleProof(hash []byte) ([][]byte, []int, error) {
 	// Defines implied variables
 	var (
@@ -113,7 +129,10 @@ func (t *Tree) GenerateMerkleProof(hash []byte) ([][]byte, []int, error) {
 	return path, idxs, ErrInvalidProof
 }
 
-// Rebuilds the tree to verify its integrity
+/*
+- Description: Rebuilds the tree to verify its integrity.
+- Output: Returns a boolean indicating whether the tree's integrity is valid or not.
+*/
 func (t *Tree) VerifyTreeIntegrity() bool {
 	// Handles the basic case
 	if len(t.Leaves) == 0 || t.Root == nil {
@@ -124,7 +143,10 @@ func (t *Tree) VerifyTreeIntegrity() bool {
 	return bytes.Equal(t.Root.Hash, r.Hash)
 }
 
-// Effectively builds the root of the Merkle tree
+/*
+- Description: Effectively builds the root of the Merkle tree.
+- Output: Returns a pointer to the root Node of the tree.
+*/
 func (t *Tree) buildRoot() *Node {
 	nodes := t.Leaves
 	// We are iterating until we reach a single node, which will be our root
