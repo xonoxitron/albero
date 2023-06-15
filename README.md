@@ -87,7 +87,7 @@ The function returns a boolean value indicating whether the Merkle tree is intac
 
 ### Testing hardware
 
-- OS: Venture 13.3.1
+- OS: Ventura 13.3.1
 - CPU: 2,3 GHz 8-Core Intel Core i9
 - RAM: 16 GB
 
